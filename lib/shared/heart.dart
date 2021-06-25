@@ -41,13 +41,9 @@ class _HeartState extends State<Heart> with SingleTickerProviderStateMixin {
      */
     _animationController.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
-        setState(() {
           isFavourite = true;
-        });
       } else if (status == AnimationStatus.dismissed) {
-        setState(() {
           isFavourite = false;
-        });
       }
     });
   }
