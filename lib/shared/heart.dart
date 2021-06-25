@@ -19,7 +19,7 @@ class _HeartState extends State<Heart> with SingleTickerProviderStateMixin {
      * vsync: Sync the animation with the ticker
      */
     _animationController =
-        AnimationController(duration: Duration(milliseconds: 200), vsync: this);
+        AnimationController(duration: Duration(milliseconds: 500), vsync: this);
 
     /**
      * Use ColorTween for Color transition
@@ -27,8 +27,6 @@ class _HeartState extends State<Heart> with SingleTickerProviderStateMixin {
      */
     _colorAnimation = ColorTween(begin: Colors.grey[400], end: Colors.redAccent)
         .animate(_animationController);
-
-    _animationController.forward();
 
     _animationController.addListener(() {
       print(_animationController.value);
@@ -38,13 +36,23 @@ class _HeartState extends State<Heart> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-      icon: Icon(
-        Icons.favorite,
-        color: Colors.grey[400],
-        size: 30,
-      ),
-      onPressed: () {},
+    return AnimatedBuilder(
+      animation: _animationController,
+      builder: (BuildContext context, _) {
+        return IconButton(
+          icon: Icon(
+            Icons.favorite,
+            color: _colorAnimation.value,
+            size: 30,
+          ),
+          onPressed: () {
+            /**
+             * Trigger the controller to start transition
+             */
+            _animationController.forward();
+          },
+        );
+      },
     );
   }
 }
