@@ -8,6 +8,7 @@ class Heart extends StatefulWidget {
 class _HeartState extends State<Heart> with SingleTickerProviderStateMixin {
   AnimationController _animationController;
   Animation _colorAnimation;
+  bool isFavourite = false;
 
   @override
   void initState() {
@@ -32,6 +33,30 @@ class _HeartState extends State<Heart> with SingleTickerProviderStateMixin {
       print(_animationController.value);
       print(_colorAnimation.value);
     });
+
+    /**
+     * Add StatusListener to trace the status of animation
+     * If animation is done, reverse it
+     * If animation is in init state, forward it
+     */
+    _animationController.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        setState(() {
+          isFavourite = true;
+        });
+      } else if (status == AnimationStatus.dismissed) {
+        setState(() {
+          isFavourite = false;
+        });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _animationController
+        .dispose(); // After leaving page, dispose the controller so that it will not occupy resources
   }
 
   @override
@@ -48,8 +73,12 @@ class _HeartState extends State<Heart> with SingleTickerProviderStateMixin {
           onPressed: () {
             /**
              * Trigger the controller to start transition
+             * if wanna favourite, forward the animation
+             * if wanna unfavourite, reverse the animation
              */
-            _animationController.forward();
+            isFavourite
+                ? _animationController.reverse()
+                : _animationController.forward();
           },
         );
       },
