@@ -10,6 +10,7 @@ class _HeartState extends State<Heart> with SingleTickerProviderStateMixin {
   AnimationController _animationController;
   Animation<Color> _colorAnimation;
   Animation<double> _sizeAnimation;
+  Animation _curve;
 
   @override
   void initState() {
@@ -21,14 +22,19 @@ class _HeartState extends State<Heart> with SingleTickerProviderStateMixin {
      * vsync: Sync the animation with the ticker
      */
     _animationController =
-        AnimationController(duration: Duration(milliseconds: 500), vsync: this);
+        AnimationController(duration: Duration(milliseconds: 1000), vsync: this);
+
+    /**
+     * Curve Animation for smoother transition effects
+     */
+    _curve = CurvedAnimation(parent: _animationController, curve: Curves.slowMiddle);
 
     /**
      * Use ColorTween for Color transition
      * Use .animate() to bind ColorTween with an animation controller
      */
     _colorAnimation = ColorTween(begin: Colors.grey[400], end: Colors.redAccent)
-        .animate(_animationController);
+        .animate(_curve);
 
     /**
      * TweenSequence for a series of animation be done in one go
@@ -38,7 +44,7 @@ class _HeartState extends State<Heart> with SingleTickerProviderStateMixin {
           tween: Tween<double>(begin: 30, end: 50), weight: 50),
       TweenSequenceItem<double>(
           tween: Tween<double>(begin: 50, end: 30), weight: 50),
-    ]).animate(_animationController);
+    ]).animate(_curve);
 
     _animationController.addListener(() {
       print(_animationController.value);

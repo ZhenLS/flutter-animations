@@ -13,8 +13,9 @@ class ScreenTitle extends StatelessWidget {
         style: TextStyle(
             fontSize: 36, color: Colors.white, fontWeight: FontWeight.bold),
       ),
-      duration: Duration(milliseconds: 1500),
+      duration: Duration(milliseconds: 1000),
       tween: Tween<double>(begin: 0, end: 1),
+      curve: Curves.easeIn,
       builder: (BuildContext context, double _val, child) {
         // child- The Text in child doesn't need to be animated on every rebuild (Since nothing change)
         return Opacity(
